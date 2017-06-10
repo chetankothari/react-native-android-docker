@@ -1,22 +1,24 @@
 FROM ubuntu:16.04
 
-ENV ANDROID_SDK_TOOLS_VERSION=25 \
+ENV JDK_VERSION=8u131-b11-0ubuntu1.16.04.2 \
+    ANDROID_SDK_TOOLS_VERSION=25 \
     ANDROID_BUILD_TOOLS_VERSION=25.0.3 \
     ANDROID_TARGET_SDK_VERSION=25 \
-    ANDROID_HOME="/opt/android" \
+    ANDROID_PATH="/opt/android" \
     NODEJS_VERSION=6.10.0 \
-    NODE_PATH="/opt/node"
+    NODE_PATH="/opt/node" \
+    REACT_NATIVE_CLI_VERSION=2.0.1
 
 ENV ANDROID_SDK_URL="https://dl.google.com/android/repository/tools_r${ANDROID_SDK_TOOLS_VERSION}-linux.zip" \
     NODEJS_URL="https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.gz" \
     ANDROID_SDK_PACKAGES="platform-tools,android-${ANDROID_TARGET_SDK_VERSION},build-tools-${ANDROID_BUILD_TOOLS_VERSION},extra-android-m2repository,extra-android-support" \
-    PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$NODE_PATH/bin"
+    PATH="$PATH:$ANDROID_PATH/tools:$ANDROID_PATH/platform-tools:$ANDROID_PATH/build-tools/$ANDROID_BUILD_TOOLS_VERSION:$NODE_PATH/bin"
 
 # Install basic tools and dependencies
 RUN dpkg --add-architecture i386 && \
     apt-get -qq update && \
     apt-get install -y \
-      openjdk-8-jdk \
+      openjdk-8-jdk=${JDK_VERSION} \
       git \
       curl \
       wget \
@@ -31,15 +33,15 @@ RUN dpkg --add-architecture i386 && \
     apt-get clean
 
 # Install Android SDK
-RUN mkdir -p ${ANDROID_HOME} && \
-    cd ${ANDROID_HOME} && wget -q ${ANDROID_SDK_URL} -O android-sdk-tools.zip && \
-    unzip -q ${ANDROID_HOME}/android-sdk-tools.zip -d ${ANDROID_HOME} && \
-    cd ${ANDROID_HOME} && rm -f android-sdk-tools.zip && \
-    chmod a+x -R $ANDROID_HOME && chown -R root:root $ANDROID_HOME && \
+RUN mkdir -p ${ANDROID_PATH} && \
+    cd ${ANDROID_PATH} && wget -q ${ANDROID_SDK_URL} -O android-sdk-tools.zip && \
+    unzip -q ${ANDROID_PATH}/android-sdk-tools.zip -d ${ANDROID_PATH} && \
+    cd ${ANDROID_PATH} && rm -f android-sdk-tools.zip && \
+    chmod a+x -R $ANDROID_PATH && chown -R root:root $ANDROID_PATH && \
     echo y | android update sdk -a -u -t ${ANDROID_SDK_PACKAGES} && \
-    mkdir -p $ANDROID_HOME/licenses/ && \
-    echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_HOME/licenses/android-sdk-license && \
-    echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-license
+    mkdir -p $ANDROID_PATH/licenses/ && \
+    echo "8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_PATH/licenses/android-sdk-license && \
+    echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_PATH/licenses/android-sdk-preview-license
 
 # Install Node
 RUN apt-get -qq update && \
@@ -50,4 +52,4 @@ RUN apt-get -qq update && \
     apt-get clean
 
 # Install React Native
-RUN npm install -g react-native-cli
+RUN npm install -g react-native-cli@${REACT_NATIVE_CLI_VERSION}
