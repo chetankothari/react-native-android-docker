@@ -14,6 +14,7 @@ Below is a list of `ENV`s and the defaults.
 | ANDROID_BUILD_TOOLS_VERSION | 25.0.3                     |
 | ANDROID_TARGET_SDK_VERSION  | 25                         |
 | ANDROID_PATH                | /opt/android               |
+| ANDROID_HOME                | /opt/android               |
 | NODEJS_VERSION              | 6.10.0                     |
 | NODE_PATH                   | /opt/node                  |
 | REACT_NATIVE_CLI_VERSION    | 2.0.1                      |
