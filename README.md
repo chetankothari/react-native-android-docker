@@ -5,7 +5,7 @@ This is a simple docker image for building react native android application in d
 
 The base image used is `ubuntu:16.04`
 
-Below is a list of `ENV`s and the defaults. 
+Below is a list of `ENV`s and the defaults.
 
 | Environment Variable        | Default Values             |
 |-----------------------------|----------------------------|
@@ -13,7 +13,6 @@ Below is a list of `ENV`s and the defaults.
 | ANDROID_SDK_TOOLS_VERSION   | 25                         |
 | ANDROID_BUILD_TOOLS_VERSION | 25.0.3                     |
 | ANDROID_TARGET_SDK_VERSION  | 25                         |
-| ANDROID_PATH                | /opt/android               |
 | ANDROID_HOME                | /opt/android               |
 | NODEJS_VERSION              | 6.10.0                     |
 | NODE_PATH                   | /opt/node                  |
